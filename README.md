@@ -1,8 +1,8 @@
 # C++ Template Libraries #
 
-Wheels reinvented.
-
 *   CNTL : C++ Non-Standard Template Library
+
+Wheels reinvented.
 
     Last Update: Jun 09, 2012
     Since: Jan 01, 2011
