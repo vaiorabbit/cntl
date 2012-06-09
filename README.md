@@ -1,9 +1,11 @@
-# CNTL : C++ Non-Standard Template Library #
+# C++ Template Libraries #
 
 Wheels reinvented.
 
-Last Update: Jun 09, 2012
-Since: Jan 01, 2011
+*   CNTL : C++ Non-Standard Template Library
+
+    Last Update: Jun 09, 2012
+    Since: Jan 01, 2011
 
 ## Contents ##
 
@@ -27,9 +29,9 @@ Since: Jan 01, 2011
 
 ## Building how-to ##
 
-  $ cd build
-  $ cmake ..
-  $ start cntl.sln
+    $ cd build
+    $ cmake ..
+    $ start cntl.sln
 
 
 ## Credits ##
