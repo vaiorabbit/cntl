@@ -1,0 +1,24 @@
+2012-02-15  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* STLAllocator.h (cntl::STLAllocator): Renamed from
+	'MemoryAllocator.h'. And 'cntl::Allocator' also renamed to
+	'cntl::STLAllocator'.
+
+	* Added: EmbList.h, MemoryAllocator.h, Mutex.h, MutexPthread.h,
+	MutexWindows.h, MemoryAllocator.cpp
+
+2011-02-13  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* Memory.h (Initialize/Finalize, cntlMalloc, etc.): Added debug-purpose manager.
+	* String.h: Yet another C string wrapper.
+	* SortedArray.h: Ordered array almost compatible with std::set.
+	* LinkedList.h: Doubly-linked list almost compatible with std::list.
+	* sample/Tokenizer: Added new sample.
+
+2011-01-10  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* RefLinkedPtr.h, Pair.h, Random.h: Added.
+
+2011-01-01  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* Announce: First release.
