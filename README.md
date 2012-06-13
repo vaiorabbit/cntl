@@ -4,7 +4,7 @@
 
 Wheels reinvented.
 
-    Last Update: Jun 09, 2012
+    Last Update: Jun 14, 2012
     Since: Jan 01, 2011
 
 ## Contents ##
@@ -16,6 +16,7 @@ Wheels reinvented.
   *   SortedArray : Ordered array (std::set) implemented with cntl::DynamicArray.
   *   LinkedList : Doubly-linked list implementation.
   *   String : C string wrapper.
+  *   UnFunctor : 1-argument functor.
 
 *   Utilities
 
