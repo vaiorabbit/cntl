@@ -20,6 +20,7 @@ public:
         {
             cntl::String str_default;
             TEST_ASSERT( std::strcmp( str_default.c_str(), "" ) == 0 );
+            // TEST_ASSERT( str_default.c_str() == NULL );
 
             cntl::String str_fromcstr( "C String" );
             TEST_ASSERT( std::strcmp( str_fromcstr.c_str(), "C String" ) == 0 );

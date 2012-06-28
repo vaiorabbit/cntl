@@ -23,7 +23,7 @@ namespace cntl
         // Constructor
 
         String()
-            : m_cstr( cs_duplicate( "" ) )
+            : m_cstr( cs_emptystr()/*cs_duplicate( "" )*/ )
             {}
 
         String( const String& str )
@@ -36,7 +36,8 @@ namespace cntl
 
         ~String()
             {
-                cntlFreeSystem( m_cstr );
+                if ( !cs_isnotallocated() )
+                    cntlFreeSystem( m_cstr );
             }
 
         String& operator =( const String& other )
@@ -44,11 +45,10 @@ namespace cntl
                 if ( this != &other )
                 {
                     char* new_cstr = cs_duplicate( other.c_str() );
-                    if ( new_cstr != NULL )
-                    {
+                    if ( !cs_isnotallocated() )
                         cntlFreeSystem( m_cstr );
+                    if ( new_cstr != NULL  )
                         m_cstr = new_cstr;
-                    }
                 }
 
                 return *this;
@@ -59,11 +59,10 @@ namespace cntl
                 if ( m_cstr != s )
                 {
                     char* new_cstr = cs_duplicate( s );
-                    if ( new_cstr != NULL )
-                    {
+                    if ( !cs_isnotallocated() )
                         cntlFreeSystem( m_cstr );
+                    if ( new_cstr != NULL  )
                         m_cstr = new_cstr;
-                    }
                 }
 
                 return *this;
@@ -78,8 +77,15 @@ namespace cntl
 
         void clear()
             {
-                cntlFreeSystem( m_cstr );
-                m_cstr = cs_duplicate( "" );
+                if ( cs_isnotallocated() )
+                {
+                    m_cstr = cs_emptystr();
+                }
+                else
+                {
+                    cntlFreeSystem( m_cstr );
+                    m_cstr = cs_duplicate( "" );
+                }
             }
 
         bool empty() const
@@ -106,7 +112,10 @@ namespace cntl
                 std::size_t old_length = cs_length( m_cstr );
                 std::size_t src_length = cs_length( str.m_cstr );
 
-                m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length+src_length+1 ) );
+                if ( cs_isnotallocated() )
+                    m_cstr = static_cast<char*>( cntlMallocSystem( old_length+src_length+1 ) );
+                else
+                    m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length+src_length+1 ) );
                 assert( m_cstr != NULL );
                 std::memmove( m_cstr+old_length, str.m_cstr, src_length+1 );
 
@@ -118,7 +127,10 @@ namespace cntl
                 std::size_t old_length = cs_length( m_cstr );
                 std::size_t src_length = cs_length( s );
 
-                m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length+src_length+1 ) );
+                if ( cs_isnotallocated() )
+                    m_cstr = static_cast<char*>( cntlMallocSystem( old_length+src_length+1 ) );
+                else
+                    m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length+src_length+1 ) );
                 assert( m_cstr != NULL );
                 std::memmove( m_cstr+old_length, s, src_length+1 );
 
@@ -127,22 +139,25 @@ namespace cntl
 
         String& erase( std::size_t pos = 0, std::size_t n = npos )
             {
-                std::size_t old_length = cs_length( m_cstr );
-                assert( pos <= old_length );
-                if ( pos > old_length )
-                    return *this;
-                std::size_t m = old_length - pos;
-                std::size_t l = n < m ? n : m;
-                if ( l > 0 )
+                if ( !cs_isnotallocated() )
                 {
-                    char* s = m_cstr + pos;
-                    char* t = s + l;
-                    std::size_t move_count = m - l + 1;
-                    std::memmove( s, t, move_count );
-                    m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length-l +1) );
-                    assert( m_cstr != NULL );
+                    std::size_t old_length = cs_length( m_cstr );
+                    assert( pos <= old_length );
+                    if ( pos > old_length )
+                        return *this;
+                    std::size_t m = old_length - pos;
+                    std::size_t l = n < m ? n : m;
+                    if ( l > 0 )
+                    {
+                        char* s = m_cstr + pos;
+                        char* t = s + l;
+                        std::size_t move_count = m - l + 1;
+                        std::memmove( s, t, move_count );
+                        m_cstr = static_cast<char*>( cntlReallocSystem( m_cstr, old_length-l +1) );
+                        assert( m_cstr != NULL );
+                    }
                 }
-
+                
                 return *this;
             }
 
@@ -161,6 +176,9 @@ namespace cntl
 
         String substr( size_t pos = 0, size_t n = npos ) const
             {
+                if ( cs_isnotallocated() )
+                    return String(m_cstr);
+                
                 std::size_t original_length = cs_length( m_cstr );
                 assert( pos <= original_length );
 
@@ -246,6 +264,17 @@ namespace cntl
     private:
 
         char* m_cstr;
+        
+        static char* cs_emptystr()
+        {
+            static char* s_pEmptyStr = "";
+            return s_pEmptyStr;
+        }
+        
+        bool cs_isnotallocated() const
+        {
+            return m_cstr == cs_emptystr();
+        }
 
         static std::size_t cs_length( const char* s )
             {

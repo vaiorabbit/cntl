@@ -279,6 +279,9 @@ void  MemoryAllocator::Free( void* ptr )
 
 void  MemoryAllocator::FreeImpl( void* ptr )
 {
+    if ( ptr == NULL )
+        return;
+    
     MCB* mcb = static_cast<MCB*>(ptr) - 1;
 
     assert( mcb->IsFlagOn( MCB::Flag_Used ) );

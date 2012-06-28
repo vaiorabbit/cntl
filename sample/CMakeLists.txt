@@ -15,3 +15,4 @@ else (CMAKE_HOST_APPLE)
 endif()
 
 add_subdirectory( Tokenizer )
+add_subdirectory( string_symbol )
