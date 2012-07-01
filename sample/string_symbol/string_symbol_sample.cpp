@@ -8,15 +8,35 @@
 // Ref.: http://www.firstobject.com/getmillicount-milliseconds-portable-c++.htm
 # include <sys/timeb.h>
 
-int GetTickCount()
+int GetMilliCount()
 {
     timeb tb;
     ftime( &tb );
     int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
     return nCount;
 }
+
+int GetMilliSpan( int nTimeStart )
+{
+  int nSpan = GetMilliCount() - nTimeStart;
+  if ( nSpan < 0 )
+    nSpan += 0x100000 * 1000;
+  return nSpan;
+}
+
 #elif defined(WIN32)
-# include <windows.h>
+
+#include <windows.h>
+
+int GetMilliCount()
+{
+    return (int)GetTickCount();
+}
+
+int GetMilliSpan( int nTimeStart )
+{
+    return (int)GetTickCount() - nTimeStart;
+}
 #endif
 
 // Ref.: stx::basic_symbol<T> http://www.s34.co.jp/cpptechdoc/misc/stx-basic_symbol/
@@ -44,11 +64,11 @@ long trial(Container& container, const T* table, int repeat) {
         container[table[i]] = i;
 
     // table[0..N-1]をcontainerから検索し、その処理時間を求める。
-    long t = GetTickCount();
+    int t = GetMilliCount();
     while ( repeat-- )
         for ( i = 0; i < N; ++i)
             container.find(table[i]);
-    return GetTickCount() - t;
+    return GetMilliSpan( t );
 }
 
 int main( int argc, char** argv )
