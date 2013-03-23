@@ -1,6 +1,6 @@
 // -*- mode: C++; coding: utf-8 -*-
-#ifndef TCDAACCESSOR_H_INCLUDED
-#define TCDAACCESSOR_H_INCLUDED
+#ifndef TCTLQUEUE_H_INCLUDED
+#define TCTLQUEUE_H_INCLUDED
 
 #include <cntl/TwoLockQueue.h>
 #include <cntl/String.h>
@@ -18,14 +18,17 @@ public:
 
     virtual void Run()
         {
-            // front / back
             cntl::TwoLockQueue<int> tlq;
             tlq.Initialize();
-            for ( int i = 0; i < 3; ++i )
-                tlq.Enqueue( i+1 );
 
             int out = 0;
             bool result = false;
+
+            result = tlq.Dequeue( &out );
+            TEST_ASSERT_EQUAL( result, false );
+
+            for ( int i = 0; i < 3; ++i )
+                tlq.Enqueue( i+1 );
 
             result = tlq.Dequeue( &out );
             TEST_ASSERT_EQUAL( out, 1 );

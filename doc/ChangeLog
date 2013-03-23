@@ -1,6 +1,7 @@
 2013-03-23  LT140  <http://sites.google.com/site/ltsevenscore/>
 
 	* TwoLockQueue.h (cntl::TwoLockQueue): Concurrent two-lock queue.
+	* Timer.h (cntl::Timer): Generates elapsed time.
 
 2012-06-29  LT140  <http://sites.google.com/site/ltsevenscore/>
 

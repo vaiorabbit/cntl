@@ -22,6 +22,7 @@ Wheels reinvented.
 *   Utilities
 
   *   WELL : WELL1024a random number generator.
+  *   Timer : Generates elapsed time.
 
 *   Memory Management
 
