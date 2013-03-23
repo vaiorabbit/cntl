@@ -4,7 +4,7 @@
 
 Wheels reinvented.
 
-    Last Update: Jun 29, 2012
+    Last Update: Mar 23, 2013
     Since: Jan 01, 2011
 
 ## Contents ##
@@ -17,6 +17,7 @@ Wheels reinvented.
   *   LinkedList : Doubly-linked list implementation.
   *   String : C string wrapper.
   *   UnFunctor : 1-argument functor.
+  *   TwoLockQueue : Concurrent two-lock queue.
 
 *   Utilities
 
