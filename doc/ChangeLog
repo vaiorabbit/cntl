@@ -1,3 +1,8 @@
+2013-03-24  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* Thread.h (cntl::Thread): Simple thread wrapper.
+	* Event.h, EventPthread.h, EventWindows.h (cntl::Event): Windows Event object wrapper.
+
 2013-03-23  LT140  <http://sites.google.com/site/ltsevenscore/>
 
 	* TwoLockQueue.h (cntl::TwoLockQueue): Concurrent two-lock queue.

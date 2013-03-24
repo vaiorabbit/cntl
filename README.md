@@ -4,7 +4,7 @@
 
 Wheels reinvented.
 
-    Last Update: Mar 23, 2013
+    Last Update: Mar 24, 2013
     Since: Jan 01, 2011
 
 ## Contents ##
@@ -23,6 +23,8 @@ Wheels reinvented.
 
   *   WELL : WELL1024a random number generator.
   *   Timer : Generates elapsed time.
+  *   Thread : Simple thread wrapper.
+  *   Event : Event object wrapper.
 
 *   Memory Management
 

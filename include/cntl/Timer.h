@@ -1,5 +1,6 @@
-#ifndef TIMER_H_INCLUDED
-#define TIMER_H_INCLUDED
+// -*- mode: C++; coding: utf-8-dos; -*-
+#ifndef CNTL_TIMER_H_INCLUDED
+#define CNTL_TIMER_H_INCLUDED
 
 #if defined(__APPLE__) || defined(__linux__)
 # include <sys/time.h> // timeval, gettimeofday
@@ -28,4 +29,4 @@ namespace cntl
 #endif
     };
 }
-#endif // TIMER_H_INCLUDED
+#endif // CNTL_TIMER_H_INCLUDED
