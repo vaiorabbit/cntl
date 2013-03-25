@@ -1,3 +1,4 @@
+// -*- mode: C++; coding: utf-8-dos; -*-
 #include <cassert>
 #include <cntl/Thread.h>
 

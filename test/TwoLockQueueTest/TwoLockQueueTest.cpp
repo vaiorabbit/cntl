@@ -2,6 +2,7 @@
 #include <TestFramework.h>
 
 #include "TCTLQueue.h"
+#include "TCTLQueueShared.h"
 
 int
 main( int argc, char** argv )
@@ -15,6 +16,7 @@ main( int argc, char** argv )
 
     Test::Case* tc[] = {
         new TCTLQueue( "TCTLQueue" ),
+        new TCTLQueueShared( "TCTLQueueShared" ),
     };
 
     for ( int i = 0; i < sizeof(tc)/sizeof(tc[0]); ++i )

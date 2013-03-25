@@ -3,7 +3,6 @@
 #define TCTLQUEUE_H_INCLUDED
 
 #include <cntl/TwoLockQueue.h>
-#include <cntl/String.h>
 #include <TestFramework.h>
 
 class TCTLQueue : public Test::Case
