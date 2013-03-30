@@ -49,7 +49,6 @@ namespace cntl
         bool m_bSuspended;
 #elif defined(WIN32)
         HANDLE m_hThread;
-        DWORD m_dwThreadID;
         CRITICAL_SECTION m_mutexRunnable;
         bool m_bRunnable;
 

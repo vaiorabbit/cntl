@@ -17,7 +17,6 @@ Thread::Thread()
     , m_bSuspended(false)
 #elif defined(WIN32)
     : m_hThread()
-    , m_dwThreadID(0)
     , m_mutexRunnable()
     , m_bRunnable(true)
     , m_mutexSuspend()
@@ -61,7 +60,7 @@ Thread::Create( unsigned int nStackSize /*= 0*/, bool bCreateSuspended /*= false
     m_bRunnable = true;
 
     // Thread
-    m_hThread = ::CreateThread( NULL, nStackSize, BootThread, this, (bCreateSuspended ? CREATE_SUSPENDED : 0), &m_dwThreadID );
+    m_hThread = ::CreateThread( NULL, nStackSize, BootThread, this, (bCreateSuspended ? CREATE_SUSPENDED : 0), NULL );
 #endif // defined(__APPLE__) || defined(__linux__)
 
     return true;
@@ -206,7 +205,6 @@ Thread::Resume()
         pthread_mutex_unlock( &m_mutexSuspend );
     }
 #elif defined(WIN32)
-    OutputDebugString("Resume");
     if ( m_bSuspended )
     {
         ::EnterCriticalSection( &m_mutexSuspend );
