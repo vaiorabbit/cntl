@@ -1,6 +1,7 @@
 set( TwoLockQueueTest_EXE_HDRS 
     ../common/TestFramework.h
     TCTLQueue.h
+    TCTLQueueShared.h
 )
 
 set( TwoLockQueueTest_EXE_SRCS 

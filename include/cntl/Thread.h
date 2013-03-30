@@ -17,6 +17,7 @@ namespace cntl
         virtual ~Thread();
         bool Create( unsigned int nStackSize = 0, bool bCreateSuspended = false );
         void Terminate();
+        void Destroy();
         void Join();
 
         void Suspend();
@@ -48,8 +49,12 @@ namespace cntl
         bool m_bSuspended;
 #elif defined(WIN32)
         HANDLE m_hThread;
+        DWORD m_dwThreadID;
         CRITICAL_SECTION m_mutexRunnable;
         bool m_bRunnable;
+
+        CRITICAL_SECTION m_mutexSuspend;
+        bool m_bSuspended;
 #endif
     };
 }

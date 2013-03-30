@@ -73,6 +73,16 @@ public:
             {
                 m_thread[i].Terminate();
             }
+
+            for ( int i = 0; i < 2; ++i )
+            {
+                m_thread[i].Join();
+            }
+
+            for ( int i = 0; i < 2; ++i )
+            {
+                m_thread[i].Destroy();
+            }
         }
 };
 

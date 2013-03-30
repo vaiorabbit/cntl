@@ -15,7 +15,7 @@ class TCTLQueueShared : public Test::Case
 
 public:
 
-    const int nProduct = 10000;
+    static const int nProduct = 10000;
 
     class ProducerThread : public cntl::Thread
     {
@@ -29,7 +29,7 @@ public:
 
                 while ( Runnable() )
                 {
-                    // std::cout << "Producer produced:\t" << iProduct << std::endl;
+                    std::cout << "Producer produced:\t" << iProduct << std::endl;
                     tlq.Enqueue( iProduct++ );
                 }
 
@@ -88,13 +88,16 @@ public:
             while ( timer.GetElapsedTime() < 1.0 );
             m_threadProducer.Resume();
 
-            while ( timer.GetElapsedTime() < 2.0 );
+            while ( timer.GetElapsedTime() < 10.0 );
 
             m_threadProducer.Terminate();
             m_threadConsumer.Terminate();
 
             m_threadProducer.Join();
             m_threadConsumer.Join();
+
+            m_threadProducer.Destroy();
+            m_threadConsumer.Destroy();
 
             tlq.Finalize();
         }
