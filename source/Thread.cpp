@@ -115,7 +115,7 @@ Thread::Suspend()
         if ( !m_bSuspended )
         {
             m_bSuspended = true;
-            do { // gurad for spurious wakeup
+            do { // guard for spurious wakeup
                 pthread_cond_wait( &m_condResume, &m_mutexSuspend );
             } while ( m_bSuspended );
         }
@@ -146,7 +146,7 @@ Thread::WaitForResume()
 {
 #if defined(__APPLE__) || defined(__linux__)
     pthread_mutex_lock( &m_mutexSuspend );
-    while ( m_bSuspended ) { // gurad for spurious wakeup
+    while ( m_bSuspended ) { // guard for spurious wakeup
         pthread_cond_wait( &m_condResume, &m_mutexSuspend );
     }
     pthread_mutex_unlock( &m_mutexSuspend );
