@@ -1,4 +1,9 @@
 // -*- mode: C++; coding: utf-8-dos; -*-
+#if defined(__APPLE__) || defined(__linux__)
+# include <unistd.h> // usleep
+#elif defined(WIN32)
+# include <windows.h> // ::Sleep
+#endif
 #include <cassert>
 #include <cntl/Thread.h>
 
@@ -28,7 +33,7 @@ Thread::~Thread()
 {}
 
 bool
-Thread::Create( unsigned int nStackSize /*= 0*/, bool bCreateSuspended /*= false*/  )
+Thread::Create( bool bCreateSuspended /*= true*/, unsigned int nStackSize /*= 0*/ )
 {
 #if defined(__APPLE__) || defined(__linux__)
     // Suspend/Resume
@@ -230,6 +235,17 @@ Thread::WaitForResume()
 #elif defined(WIN32)
     ::SuspendThread( m_hThread );
 #endif // defined(__APPLE__) || defined(__linux__)
+}
+
+// static
+void
+Thread::Sleep( unsigned int msec )
+{
+#if defined(__APPLE__) || defined(__linux__)
+    usleep( msec * 1000 );
+#elif defined(WIN32)
+    ::Sleep( msec );
+#endif
 }
 
 // static

@@ -85,8 +85,8 @@ public:
             gs_Thread0GoEvent.Set();
             gs_Thread1GoEvent.Reset();
 
-            m_thread0.Create(0, true);
-            m_thread1.Create(0, true);
+            m_thread0.Create();
+            m_thread1.Create();
 
             m_thread0.Resume();
             m_thread1.Resume();

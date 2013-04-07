@@ -78,8 +78,8 @@ public:
         {
             tlq.Initialize();
 
-            m_threadProducer.Create(0, true);
-            m_threadConsumer.Create(0, true);
+            m_threadProducer.Create();
+            m_threadConsumer.Create();
 
             cntl::Timer timer;
             timer.Reset();

@@ -16,3 +16,4 @@ endif()
 
 add_subdirectory( Tokenizer )
 add_subdirectory( string_symbol )
+add_subdirectory( JobQueue )

@@ -53,7 +53,7 @@ public:
         {
             for ( int i = 0; i < 2; ++i )
             {
-                m_thread[i].Create(0, true);
+                m_thread[i].Create();
                 m_thread[i].SetID( i );
             }
 

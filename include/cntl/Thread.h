@@ -15,7 +15,7 @@ namespace cntl
     public:
         Thread();
         virtual ~Thread();
-        bool Create( unsigned int nStackSize = 0, bool bCreateSuspended = false );
+        bool Create( bool bCreateSuspended = true, unsigned int nStackSize = 0 );
         void Terminate();
         void Destroy();
         void Join();
@@ -23,6 +23,8 @@ namespace cntl
         void Suspend();
         void Resume();
         bool Suspended();
+
+        static void Sleep( unsigned int msec );
 
     protected:
         virtual void Run() =0;
