@@ -93,7 +93,6 @@ namespace cntl
 
         bool Dequeue( Type* pValueOut )
             {
-
                 m_pMutexHead->Lock();
                 Node* pNode = m_pHead;
                 Node* pNewHead = pNode->next;
@@ -102,6 +101,7 @@ namespace cntl
                     m_pMutexHead->Unlock();
                     return false;
                 }
+
                 if ( pValueOut )
                     *pValueOut = pNewHead->value;
                 m_pHead = pNewHead;

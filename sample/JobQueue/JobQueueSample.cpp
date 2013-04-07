@@ -10,6 +10,7 @@
 class JobData0 : public Job::Data
 {
 public:
+    int id;
     float data[DATA0_CONTENT_MAX];
 };
 
@@ -18,6 +19,7 @@ JobData0 cJobData0[DATA0_INSTANCE_MAX];
 void JobProc0( Job::Data* pData )
 {
     JobData0* pData0 = (JobData0*)pData;
+    // std:: cout << "Job ID:" << " " << pData0->id << " " << std::endl;
     for ( int i = 0; i < DATA0_CONTENT_MAX; ++i )
     {
         pData0->data[i] = std::exp((float)i);
@@ -37,6 +39,7 @@ int main( int argc, char** argv )
 
         for ( int i = 0; i < DATA0_INSTANCE_MAX; ++i )
         {
+            cJobData0[i].id = i;
             cJQ.PushJob( &cJobData0[i], JobProc0 );
         }
 
@@ -44,10 +47,10 @@ int main( int argc, char** argv )
         timer.Reset();
 
         cJQ.Start();
-        while ( !cJQ.Empty() )
+        while ( !cJQ.Empty() || !cJQ.WorkersIdle() )
         {
             cntl::Thread::Sleep( 1 );
-        };
+        }
         std::cout << "GetElapsedTime=" << timer.GetElapsedTime() << std::endl;
 
         cJQ.Stop();

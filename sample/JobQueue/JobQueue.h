@@ -71,6 +71,9 @@ public:
         ~Worker();
         void Run();
 
+        bool HasJob()
+            { return m_pJob != NULL; }
+
     private:
         JobQueue* m_pJobQueue;
         Job* m_pJob;
@@ -85,6 +88,8 @@ public:
     void Stop();
     bool Running()
         { return m_bRun; }
+
+    bool WorkersIdle();
 
     void PushJob( Job::Data* pJobData, Job::Processor pJobProcessor );
     Job* PopJob();

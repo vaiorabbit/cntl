@@ -38,7 +38,20 @@ JobQueue::Worker::Run()
             {
                 m_pJob = m_pJobQueue->PopJob();
             }
+            else
+            {
+                cntl::Thread::Sleep( 1 );
+            }
         }
+    }
+
+    if ( m_pJob )
+    {
+        Job::Data* pJobData = m_pJob->GetData();
+        pJobData->SetDoneFlagOff();
+        m_pJob->~Job();
+        cntlFreeSystem( m_pJob );
+        m_pJob = NULL;
     }
 }
 
@@ -119,6 +132,16 @@ void
 JobQueue::Stop()
 {
     m_bRun = false;
+}
+
+bool
+JobQueue::WorkersIdle()
+{
+    for ( WorkerArray::iterator it = m_apWorkers.begin(); it != m_apWorkers.end(); ++it )
+        if ( (*it)->HasJob() )
+            return false;
+
+    return true;
 }
 
 void
