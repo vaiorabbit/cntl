@@ -7,6 +7,7 @@
 #include "TCAAModifier.h"
 #include "TCAAOperation.h"
 #include "TCAAOperator.h"
+#include "TCAAPerformance.h"
 
 int
 main( int argc, char** argv )
@@ -25,6 +26,7 @@ main( int argc, char** argv )
         new TCAAModifier( "Modifier" ),
         new TCAAOperation( "Operation" ),
         new TCAAOperator( "Operator" ),
+        new TCAAPerformance( "Performance" ),
     };
 
     for ( int i = 0; i < sizeof(tc)/sizeof(tc[0]); ++i )

@@ -1,3 +1,8 @@
+2013-04-13  LT140  <http://sites.google.com/site/ltsevenscore/>
+
+	* Random.h (cntl::WELL): Added some constructors for convenience.
+	* AssocArrayTest/TCAAPerformance.h: Compares performance between std::map and cntl::AssocArray.
+
 2013-04-07  LT140  <http://sites.google.com/site/ltsevenscore/>
 
 	* Thread.h (cntl::Thread): Added cntl::Thread::Sleep().

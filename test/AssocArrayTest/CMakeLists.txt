@@ -7,6 +7,7 @@ set( AssocArrayTest_EXE_HDRS
     TCAAModifier.h
     TCAAOperation.h
     TCAAOperator.h
+    TCAAPerformance.h
 )
 
 set( AssocArrayTest_EXE_SRCS 

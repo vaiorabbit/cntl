@@ -77,6 +77,14 @@ namespace cntl
 
         static const int StateDimension = State::Dimension;
 
+        WELL()
+        {}
+
+        WELL( unsigned int seed )
+        {
+            Reset( seed );
+        }
+
         WELL( unsigned int initial_state[State::Dimension] )
             : v()
         {
@@ -86,6 +94,25 @@ namespace cntl
         void Reset( unsigned int initial_state[State::Dimension] )
         {
             v.Reset( initial_state );
+        }
+
+        void Reset( unsigned int seed )
+        {
+            unsigned int initial_state[cntl::WELL::StateDimension];
+            unsigned int key = seed;
+            for ( int i = 0; i < cntl::WELL::StateDimension; ++i )
+            {
+                // Thomas Wang's 32 bit Mix Function
+                // http://www.concentric.net/~Ttwang/tech/inthash.htm
+                key = ~key + (key << 15);
+                key =  key ^ (key >> 12);
+                key =  key + (key << 2);
+                key =  key ^ (key >> 4);
+                key =  key * 2057;
+                key =  key ^ (key >> 16);
+                initial_state[i] = key;
+            }
+            Reset( initial_state );
         }
 
         unsigned int Next()
