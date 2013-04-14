@@ -12,7 +12,7 @@
 #include <TestFramework.h>
 #include "Vector3.h"
 
-#define N_ARRAY_SIZE 20000
+#define N_ARRAY_SIZE 10000
 
 class TCAAPerformance : public Test::Case
 {
@@ -62,7 +62,8 @@ public:
                 }
                 std::cout << "find (std::map): " << timer.GetElapsedTime() << "sec" << std::endl;
 
-                cntl::AllocatorForSTL().Dump();
+                // cntl::AllocatorForSTL().Dump();
+                std::cout << "Free size sum (std::map): " << cntl::AllocatorForSTL().GetFreeSizeSum() << std::endl;
             }
 
             // cntl::AssocArray
@@ -86,7 +87,8 @@ public:
                 }
                 std::cout << "find (cntl::AssocArray): " << timer.GetElapsedTime() << "sec" << std::endl;
 
-                cntl::AllocatorForSTL().Dump();
+                // cntl::AllocatorForSTL().Dump();
+                std::cout << "Free size sum (std::map): " << cntl::AllocatorForSTL().GetFreeSizeSum() << std::endl;
             }
         }
 };

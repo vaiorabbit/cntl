@@ -5,6 +5,8 @@
 #include <cstring>
 #include <cntl/MemoryAllocator.h>
 
+#define ZEROFREEBLOCK_TEST
+
 #define Cntl_NameSpace_Begin namespace cntl {
 #define Cntl_NameSpace_End   }
 
@@ -188,17 +190,30 @@ void* MemoryAllocator::AllocateAligned( std::size_t bytes, std::size_t align )
     if ( mcb == NULL )
         return NULL;
 
-
     // create new MCB that can return aligned address
     if ( bytes_padding != 0 )
     {
+        assert( bytes_padding >= sizeof(MCB) );
+
         MCB* mcb_aligned = reinterpret_cast<MCB*>( reinterpret_cast<std::size_t>(mcb) + bytes_padding );
         assert( (reinterpret_cast<std::size_t>(mcb_aligned) + sizeof(MCB)) % align == 0 );
+
         mcb_aligned->Reset( Mark_Default, MCB::Flag_None );
         used_list.InsertNext( &mcb->used_link, &mcb_aligned->used_link );
         free_list.InsertNext( &mcb->free_link, &mcb_aligned->free_link );
 
-        assert( bytes_padding >= sizeof(MCB) );
+        // +mcb_aligned+ may occupy whole capacity of +mcb+.
+        if ( MCBCapacity(mcb) == 0 )
+        {
+            // To eliminate 'dead (unused but capacity==0)' mcb,
+            // merge with previous MCB
+            MCB* mcb_prev = used_list.GetPrev( mcb->used_link );
+            if ( mcb_prev /*&& !mcb_prev->IsFlagOn( MCB::Flag_Used )*/ )
+            {
+                used_list.MergeAdjacent( &mcb_prev->used_link, &mcb->used_link );
+                free_list.Remove( &mcb->free_link );
+            }
+        }
 
         mcb = mcb_aligned;
     }
@@ -257,9 +272,23 @@ void* MemoryAllocator::AllocateAlignedTail( std::size_t bytes, std::size_t align
             - bytes_aligned - bytes_padding - sizeof(MCB)
             );
         assert( (reinterpret_cast<std::size_t>(mcb_aligned) + sizeof(MCB)) % align == 0 );
+
         mcb_aligned->Reset( Mark_Default, MCB::Flag_None );
         used_list.InsertNext( &mcb->used_link, &mcb_aligned->used_link );
         free_list.InsertNext( &mcb->free_link, &mcb_aligned->free_link );
+
+        // +mcb_aligned+ may occupy whole capacity of +mcb+.
+        if ( MCBCapacity(mcb) == 0 )
+        {
+            // To eliminate 'dead (unused but capacity==0)' mcb,
+            // merge with previous MCB
+            MCB* mcb_prev = used_list.GetPrev( mcb->used_link );
+            if ( mcb_prev /*&& !mcb_prev->IsFlagOn( MCB::Flag_Used )*/ )
+            {
+                used_list.MergeAdjacent( &mcb_prev->used_link, &mcb->used_link );
+                free_list.Remove( &mcb->free_link );
+            }
+        }
 
         mcb = mcb_aligned;
     }
@@ -506,6 +535,34 @@ void MemoryAllocator::Dump()
             free_size_max = MCBCapacity(mcb);
     }
     std::printf( "free_size_sum=%lu, free_size_max=%lu\n", free_size_sum, free_size_max );
+}
+
+std::size_t MemoryAllocator::GetMaxFreeAreaSize()
+{
+    ScopedLock lock( this->mutex );
+
+    std::size_t free_size_max = 0;
+    mcb_count = 0;
+    for ( MCB* mcb = free_list.GetHead(); mcb; mcb = free_list.GetNext(mcb->free_link) )
+    {
+        if ( free_size_max < MCBCapacity(mcb) )
+            free_size_max = MCBCapacity(mcb);
+    }
+
+    return free_size_max;
+}
+
+std::size_t MemoryAllocator::GetFreeSizeSum()
+{
+    ScopedLock lock( this->mutex );
+
+    std::size_t free_size_sum = 0;
+    for ( MCB* mcb = free_list.GetHead(); mcb; mcb = free_list.GetNext(mcb->free_link) )
+    {
+        free_size_sum += MCBCapacity(mcb);
+    }
+
+    return free_size_sum;
 }
 
 

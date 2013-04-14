@@ -75,7 +75,8 @@ namespace cntl
             { return heap_size; }
 
         void Dump();
-
+        std::size_t GetFreeSizeSum();
+        std::size_t GetMaxFreeAreaSize();
 
         // Default Allocator
         static MemoryAllocator& GetDefault();
